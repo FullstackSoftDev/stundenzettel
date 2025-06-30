@@ -14,6 +14,18 @@ export function getVacationByUserID(req, res) {
     }
 }
 
+export function getVacationSummaryByUserID(req, res) {
+    try {
+        const { user_id } = req.params;
+        const statement = db.prepare(`SELECT SUM(julianday(end_date) - julianday(start_date)) as Vocation_Total FROM vacation WHERE user_id = ?`);
+        const result = statement.all(user_id);
+        res.status(200).json(result);
+    } catch (error) {
+        console.log("Error: ", error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
 export function createVacation(req, res) {
     try {
         const { user_id, first_name, last_name, type, note, start_date, end_date } = req.body;

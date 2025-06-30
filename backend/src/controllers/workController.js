@@ -16,6 +16,18 @@ export function getWorkByUserID(req, res) {
     }
 }
 
+export function getWorkSummaryByUserID(req, res) {
+    try {
+        const { user_id } = req.params;
+        const statement = db.prepare(`SELECT COALESCE(SUM(duration), 0) as Work_Total FROM work WHERE user_id = ?`);
+        const result = statement.all(user_id);
+        res.status(200).json(result);
+    } catch (error) {
+        console.log("Error: ", error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
 export function createWork(req, res) {
     try {
         const { user_id, first_name, last_name, category, description, date, duration } = req.body;

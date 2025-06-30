@@ -14,6 +14,18 @@ export function getSickByUserID(req, res) {
     }
 }
 
+export function getSickSummaryByUserID(req, res) {
+    try {
+        const { user_id } = req.params;
+        const statement = db.prepare(`SELECT SUM(julianday(end_date) - julianday(start_date)) as Sick_Total FROM sick WHERE user_id = ?`);
+        const result = statement.all(user_id);
+        res.status(200).json(result);
+    } catch (error) {
+        console.log("Error: ", error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
 export function createSick(req, res) {
     try {
         const { user_id, first_name, last_name, certificate, note, start_date, end_date } = req.body;
