@@ -19,6 +19,10 @@
 .env.test.local
 .env.production.local
 
+app.db 
+app.db.shm
+app.db.wal
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
